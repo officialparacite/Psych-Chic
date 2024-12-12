@@ -61,12 +61,6 @@ struct Floor {
     float width, height;
 }ground;
 
-struct Meteor {
-    float x, y;      
-    float vx, vy;
-    float width, height; 
-}meteor;
-
 typedef struct {
     float x, y;
     float speedY; // Vertical speed
@@ -324,12 +318,6 @@ void setup() {
     ground.x = 0;
     ground.y = WINDOW_HEIGHT - ground.height; // Place at bottom of the screen
 
-    // Meteor
-    meteor.x = 200;       // Start position
-    meteor.y = 0;         // Top of the screen
-    meteor.width = 30;    // Width of the meteor
-    meteor.height = 30;   // Height of the meteor
-
     int ball_width, ball_height;
     int block_width, block_height;
     int object_width, object_height;
@@ -528,16 +516,6 @@ void update() {
         is_game_over = 1;
         //ball.vy *= -1; // Reverse vertical velocity
         ball.y = ground.y - ball.height; // Align the ball above the ground
-    }
-
-    // Meteor Gravity
-
-    meteor.vy += GRAVITY;
-    meteor.y += meteor.vy;
-
-    if (meteor.y + meteor.height > WINDOW_HEIGHT - ground.height) {
-        meteor.y = WINDOW_HEIGHT - meteor.height - ground.height;
-        meteor.vy = 0; // Stop movement on hitting the ground
     }
 
     //printf("Total Objects: %d\n", total_objects_to_collect); 
@@ -804,11 +782,6 @@ void reset_game() {
     block.x = 400;
     block.y = WINDOW_HEIGHT - block.height - ground.height;
 
-    // Reset meteor
-    meteor.x = 200;
-    meteor.y = 0;
-    meteor.vy = 0;
-
     // Reset objects
     for (int i = 0; i < total_objects_to_collect; i++) {
         initializeObject(&objects[i]);
@@ -854,8 +827,6 @@ void increase_level_difficulty() {
     ball.vx *= 1.1f;
     ball.vy *= 1.1f;
     block.vx *= 1.1f;
-
-    meteor.vy *= 1.1f;
 
     printf("Level difficulty increased. New level: %d, Total objects: %d\n", current_level, total_objects_to_collect);
 }
